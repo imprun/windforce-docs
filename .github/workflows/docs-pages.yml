@@ -1,0 +1,50 @@
+name: docs-pages
+
+# website/(MkDocs Material) → GitHub Pages. 공개 레포라 GitHub-hosted 러너 무료.
+# main push마다 빌드·배포(문서 연속 배포). Pages가 공개 문서 호스팅(docs.imprun.dev)의
+# 정본이다 — 구 클러스터 nginx 이미지 경로(Dockerfile.docs/docs-image.yml)는 은퇴됨.
+# Pages 소스: Settings → Pages → Build = "GitHub Actions" (build_type=workflow).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "website/**"
+      - "mkdocs.yml"
+      - "requirements-docs.txt"
+      - ".github/workflows/docs-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 동시 배포 1개로 직렬화(진행 중 배포는 취소하지 않음).
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install --no-cache-dir -r requirements-docs.txt
+      - run: mkdocs build --strict # 링크·내비 무결성 검증 포함
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

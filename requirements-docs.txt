@@ -1,0 +1,6 @@
+# 문서 사이트(Material for MkDocs) 빌드 의존성.
+#   pip install -r requirements-docs.txt
+#   mkdocs serve            # 로컬 미리보기 (http://127.0.0.1:8000)
+#   mkdocs build --strict   # 링크/내비 검증
+mkdocs-material>=9.5.0
+pymdown-extensions>=10.7

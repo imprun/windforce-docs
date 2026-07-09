@@ -1,0 +1,118 @@
+site_name: windforce
+site_description: git으로 배포한 코드를 안전하게 실행하는 멀티테넌트 SaaS 워커 플랫폼 — 사용자·운영자 가이드와 아키텍처.
+site_url: https://docs.imprun.dev/
+site_author: imprun
+copyright: Copyright &copy; 2026 imprun and the windforce contributors
+
+repo_url: https://github.com/imprun/windforce-docs
+repo_name: imprun/windforce-docs
+edit_uri: edit/main/website/
+
+# 공개 문서 사이트는 website/ 아래 큐레이션·재작성된 사용자/운영자 문서만 빌드한다.
+# 레포의 docs/(ADR·전체 명세·내부 가이드)는 엔지니어링 정본으로 유지되며, 공개 사이트는
+# 깊은 원문이 필요할 때 docs/를 GitHub 링크로 가리킨다.
+docs_dir: website
+
+theme:
+  name: material
+  language: ko
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: 다크 모드로 전환
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: 라이트 모드로 전환
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+    - content.tabs.link
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search:
+      lang:
+        - ko
+        - en
+
+nav:
+  - 홈: index.md
+  - 시작하기:
+      - 핵심 개념: getting-started/concepts.md
+      - 빠른 시작 (콘솔): getting-started/quickstart.md
+      - 로컬 평가 (Docker Compose): getting-started/self-hosting.md
+  - 콘솔:
+      - 둘러보기: guide/console.md
+      - Apps — 워크로드 카탈로그: guide/apps.md
+      - Jobs — 실행 관찰: guide/jobs.md
+      - Flows — 실행·승인: guide/flows.md
+      - Workers — 태그 커버리지: guide/workers.md
+      - Variables — 값·시크릿: guide/variables.md
+      - Settings — 워크스페이스·멤버·토큰: guide/settings.md
+      - Account — 개인 설정: guide/account.md
+  - 앱 만들기:
+      - 개발 가이드: guide/development.md
+      - 앱·액션 만들기: guide/apps-and-actions.md
+      - 액션 코드 작성: guide/writing-actions.md
+      - 콘솔 편집기 (Flow 빌더 포함): guide/editor.md
+      - 트리거 (run · webhook · schedule): guide/triggers.md
+  - 통합 (API):
+      - API 토큰 scope: reference/api-tokens.md
+      - windforce CLI: reference/cli.md
+  - 운영 (셀프호스트):
+      - Kubernetes 배포: operating/deployment.md
+      - 워커 그룹·스케일: operating/worker-groups.md
+      - 멀티테넌시·운영자 평면: operating/multitenancy.md
+      - 시크릿 관리 (SOPS + age): operating/secrets.md
+      - 관측 (Observability): operating/observability.md
+      - CI/CD 운영: operating/cicd.md
+  - 아키텍처 & 내부 동작:
+      - 개요 (3 평면 + PG 큐): architecture/overview.md
+      - 큐 스파인과 정확성 불변식: architecture/queue-and-correctness.md
+      - 2계층 샌드박싱: architecture/sandboxing.md
+      - 재현성과 내부 동작: architecture/reproducibility-and-internals.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/imprun/windforce-docs
