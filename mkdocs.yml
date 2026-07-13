@@ -88,6 +88,7 @@ nav:
       - Flows — 실행·승인: guide/flows.md
       - Workers — 태그 커버리지: guide/workers.md
       - Variables — 값·시크릿: guide/variables.md
+      - Customers — 고객·입력 설정: guide/customers.md
       - Settings — 워크스페이스·멤버·토큰: guide/settings.md
       - Account — 개인 설정: guide/account.md
   - 앱 만들기:

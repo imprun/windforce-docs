@@ -81,6 +81,8 @@ flowchart TD
 | `workers:read` | 태그별 라이브 워커 수, 서빙 워커 이름·group·ping 조회 |
 | `schedules:read` | 스케줄 조회 |
 | `schedules:write` | 스케줄 생성·변경·삭제 |
+| `consumers:read` | 고객과 그 입력 설정 조회 |
+| `consumers:write` | 고객 관리·입력 설정·고객 키 발급 |
 
 ### webhook 토큰은 별도 자격이다
 
