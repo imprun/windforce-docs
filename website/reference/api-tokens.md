@@ -4,16 +4,19 @@
 
 ## 토큰 종류
 
-windforce가 쓰는 자격(credential)은 종류가 넷이고, 인증 방식·수명·노출이 모두 다르다. 이들을 서로 섞어 쓰지 않는다.
+windforce가 쓰는 자격(credential)은 종류가 다섯이고, 인증 방식·수명·노출이 모두 다르다. 이들을 서로 섞어 쓰지 않는다.
 
 | 종류 | 용도 | 인증 방식 | 인가 근거 |
 |---|---|---|---|
 | 세션 쿠키(`session`) | UI 브라우저 로그인 | HttpOnly·Secure 쿠키 | route 워크스페이스의 enabled 멤버십 |
-| **API 토큰(`api`)** | 외부 API·CLI·자동화 | `Authorization: Bearer wf_...` | 토큰의 워크스페이스 바인딩 + scope(+ admin·super_admin 플래그) |
+| **API 토큰(`api`)** | 운영자·CI·자체 자동화 | `Authorization: Bearer wf_...` | 토큰의 워크스페이스 바인딩 + scope(+ admin·super_admin 플래그) |
+| **고객 키(customer key)** | **외부 고객**에게 건네는 크리덴셜 | `Authorization: Bearer wf_...` | 고객 바인딩 + **deny-by-default 고객 게이트** — scope가 아니라 grant(입력 설정)가 권한 |
 | 잡 토큰(job token) | 워커가 잡 SDK callback에 쓰는 stateless HMAC | 내부 전용 | 잡 단위 — 워크스페이스 API를 호출할 수 없다 |
 | 공개 잡 조회 토큰 | 공개 잡 조회 | 별도 토큰 | authenticated 워크스페이스 자격이 아니다 |
 
 이 페이지가 다루는 것은 **API 토큰**이다. 세션 쿠키는 사람이 UI에서 쓰는 자격이고, 잡 토큰·공개 조회 토큰은 windforce가 내부에서 만들어 쓰는 자격이라 사용자가 발급하지 않는다.
+
+**고객 키는 API 토큰의 고객 바인딩 변형**이지만 통제 모델이 다르다: Settings가 아니라 **[Customers 화면](../guide/customers.md)에서 발급**하고(label·만료만 — scope 선택 없음), 무엇을 할 수 있는지는 scope가 아니라 **grant**(그 고객에게 만든 입력 설정 행)가 정한다. grant된 액션 호출 + 자기 잡 읽기만 가능하고 나머지 표면은 전부 403이다 — `*` scope를 줘도 이 게이트를 넘을 수 없다. Settings → API tokens 목록에도 섞이지 않는다.
 
 API 토큰의 성질:
 
@@ -77,7 +80,10 @@ flowchart TD
 | `resources:write` | 리소스 생성 |
 | `jobs:read` | 잡 목록·요약·상태·결과·로그 조회 |
 | `jobs:run` | 잡 실행(run · run-and-wait · cancel) |
-| `webhooks:invoke` | 외부 공개 webhook 발화 **전용** |
+| `flows:read` | flow 목록·flow run 목록/상세 조회 |
+| `flows:run` | flow run 시작 |
+| `flows:resume` | flow 승인 스텝 approve/reject |
+| `webhooks:invoke` | 외부 공개 webhook 발화 **전용**(잡·flow webhook 공통) |
 | `workers:read` | 태그별 라이브 워커 수, 서빙 워커 이름·group·ping 조회 |
 | `schedules:read` | 스케줄 조회 |
 | `schedules:write` | 스케줄 생성·변경·삭제 |

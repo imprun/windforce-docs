@@ -14,7 +14,8 @@ Settings는 **Workspace / Members / API tokens / Usage** 네 영역을 탭으로
 
 ## API tokens
 
-- CI·외부 연동에 쓰는 워크스페이스 스코프 bearer 토큰이다. **최소권한 우선**으로 발급한다 — 스코프는 영역별(Jobs·Flows·Apps·Git sources·Variables 등)로 묶여 있고, 흔한 용도는 **프리셋**(Read-only observer / CI deploy / Flow trigger / Webhook invoke) 버튼으로 채운 뒤 미세조정한다. 선택 요약이 "N scopes 선택됨 · 읽기 전용"처럼 권한 범위를 알려 준다. **전체 접근(`*`)**은 별도 경고 카드로 분리돼 있어 실수로 고르기 어렵다(선택 시 개별 스코프는 비활성). **만료**(없음/30일/90일/1년)를 정할 수 있고 목록의 Expires·Status에 반영된다. **raw 토큰은 생성 직후 1회만 표시**되므로 즉시 복사해 보관한다(목록에는 prefix만 남는다). **Revoke**는 확인 후 즉시 적용된다. 전체 스코프 목록은 [API 토큰 scope](../reference/api-tokens.md)에서 다룬다.
+- **운영자·연동용 토큰**이다 — 나(운영자)·CI·자체 자동화가 쓰는 워크스페이스 스코프 bearer 토큰. **외부 고객에게 건네는 키는 여기가 아니라 [Customers](customers.md)에서 발급**하며, 이 목록에도 섞이지 않는다(고객 키는 scope가 아니라 grant로 통제된다).
+- **최소권한 우선**으로 발급한다 — 스코프는 영역별(Jobs·Flows·Apps·Git sources·Variables 등)로 묶여 있고, 흔한 용도는 **프리셋**(Read-only observer / CI deploy / Flow trigger / Webhook invoke) 버튼으로 채운 뒤 미세조정한다. 선택 요약이 "N scopes 선택됨 · 읽기 전용"처럼 권한 범위를 알려 준다. **전체 접근(`*`)**은 별도 경고 카드로 분리돼 있어 실수로 고르기 어렵다(선택 시 개별 스코프는 비활성). **만료**(없음/30일/90일/1년)를 정할 수 있고 목록의 Expires·Status에 반영된다. **raw 토큰은 생성 직후 1회만 표시**되므로 즉시 복사해 보관한다(목록에는 prefix만 남는다). **Revoke**는 확인 후 즉시 적용된다. 전체 스코프 목록은 [API 토큰 scope](../reference/api-tokens.md)에서 다룬다.
 
 ## Usage
 
