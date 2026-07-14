@@ -113,6 +113,18 @@ observer를 켜면 콘솔이 함대 배치를 K8s 사실로 보여준다.
 
 배포 파이프라인의 건강 상태도 운영자 SSOT인 Grafana에서 본다. GitOps 컨트롤러를 위한 별도 UI를 노출하지 않고, **컨트롤러 메트릭을 VictoriaMetrics로 스크랩**한다. Flux 컨트롤러가 `:8080`(`http-prom`)으로 내는 Prometheus 메트릭(`gotk_reconcile_condition` 등)을 `VMServiceScrape`로 수집하면 reconcile 성공/실패·suspend·마지막 적용 리비전이 메트릭이 된다. HelmRelease가 `Ready=False`로 정체하거나 `windforce` GitRepository가 새 릴리스 태그를 해소하지 못하면 대시보드에 뜨고 기존 알림 경로로 통지된다. 조작이 꼭 필요할 때만 `flux` CLI로 한다.
 
+## 잡 데이터의 3계층 — 관측·디버그·과금은 다른 기록이다
+
+대규모(하루 수십만~수백만 잡)에서 잡을 하나씩 추적하는 것은 1차 관측 렌즈가 아니다. windforce는 잡 데이터를 보관 기간·용도가 다른 세 기록으로 가른다:
+
+| 기록 | 무엇 | 보관 | 용도 |
+|---|---|---|---|
+| **운영 잡 행** (`job`/`job_completed`) | 풀 페이로드(입력·결과·로그) | 짧게 — `JOB_RETENTION_DAYS`로 프룬 | 개별 디버그(콘솔 Jobs 드릴) |
+| **과금 이벤트 원장** (`usage_event`) | 잡당 불변·페이로드 없는 한 줄(고객·앱·액션·outcome·실행 ms) | 길게 — retention과 **독립**, 프룬 대상 아님 | 고객별 사용량·**과금 증거·재계산**(고객 상세 Usage 탭·CSV export) |
+| **집계** (Prometheus 메트릭·`workspace_usage` 카운터) | rate·error·latency·일별 카운터 | 시계열/파생 | 건강 관측(Grafana)·쿼터 |
+
+핵심 불변식: 원장은 **완료 트랜잭션에서** 기록되므로 잡 행을 프룬해도 과금 사실은 절대 사라지지 않고, 페이로드를 담지 않아 고객 데이터를 장기 보관하지 않는다. 고객별 운영 메트릭을 Prometheus 라벨로 넣지 않는다(카디널리티) — 고객별 집계는 원장에서 계산한다.
+
 ## 대시보드는 코드로 관리한다
 
 모니터링 스택은 외부로 분리하지 않고 **이 레포가 정본**이며 Flux GitOps로 관리한다. 대시보드도 코드다.

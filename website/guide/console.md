@@ -29,7 +29,7 @@ windforce 콘솔은 브라우저에서 앱을 만들고, 코드를 배포하고,
 
 - 좌측 사이드바는 항상 화면에 고정되고 본문만 스크롤된다. 하단 **Collapse**로 아이콘만 남게 접을 수 있으며, 접힘 상태는 브라우저에 기억된다.
 - 상단 **워크스페이스 스위처**를 클릭하면 내가 속한 모든 워크스페이스 목록이 열린다. 클릭으로 전환하고, **Create workspace**로 셸 안에서 바로 새 워크스페이스를 만든다.
-- 메뉴는 **Apps / Jobs / Flows / Workers / Variables / Settings**다. 하단 계정 영역을 클릭하면 **Account settings**([계정 페이지](account.md)로 이동)와 **Sign out**이 열린다. admin 권한 여부에 따라 Settings의 관리 기능과 앱의 배포 기능 노출이 달라진다.
+- 메뉴는 **Apps / Jobs / Flows / Workers / Variables / Customers / Settings**다. 하단 계정 영역을 클릭하면 **Account settings**([계정 페이지](account.md)로 이동)와 **Sign out**이 열린다. admin 권한 여부에 따라 Settings의 관리 기능과 앱의 배포 기능 노출이 달라지며, **Customers 메뉴는 admin에게만** 보인다.
 - 멤버가 아닌 워크스페이스 URL로 들어가면 접근 불가 화면이 표시된다(리다이렉트 없이 URL을 점검할 수 있다).
 
 ## 화면별 가이드
@@ -38,12 +38,13 @@ windforce 콘솔은 브라우저에서 앱을 만들고, 코드를 배포하고,
 
 | 화면 | 무엇을 하나 |
 |---|---|
-| [Apps](apps.md) | 워크로드 카탈로그·앱 생성·앱 상세(Overview/Docs/Actions/Triggers/Deploy/Settings) |
+| [Apps](apps.md) | 워크로드 카탈로그·앱 생성·앱 상세(Overview/Docs/Actions/Triggers/Config/Deploy/Settings) |
 | [콘솔 편집기](editor.md) | draft→deploy, Run preview, diff, `ctx.` intellisense, 시각적 Flow 빌더 |
 | [Jobs](jobs.md) | 잡 실행 목록·상세·결과·로그·취소·보존 |
 | [Flows](flows.md) | flow run 관찰·승인 인박스·콕핏·Run flow·공개 링크 |
 | [Workers](workers.md) | 태그 커버리지(수요×공급)·미서빙 진단 |
 | [Variables](variables.md) | 값·시크릿과 스코프(공유/앱 전용) |
+| [Customers](customers.md) | 외부 고객 관리 — 고객 키 발급·액션 grant·입력 설정·사용량(과금 증거) |
 | [Settings](settings.md) | 워크스페이스·멤버·API 토큰·사용량 |
 | [Account](account.md) | 개인 프로필·인증·비밀번호 |
 

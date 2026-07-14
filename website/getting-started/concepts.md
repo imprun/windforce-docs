@@ -1,6 +1,6 @@
 # 핵심 개념
 
-windforce를 쓰거나 운영할 때 반복해서 만나는 용어를 한곳에 모았다. 함수를 만들고 호출하기 전에 이 페이지의 여섯 개념 — **Workspace · Account · Application Project · Action · Git Source · Job** — 과 "소스가 어떻게 실행 가능한 카탈로그가 되는가"만 잡아 두면, 나머지 문서가 같은 단어로 읽힌다.
+windforce를 쓰거나 운영할 때 반복해서 만나는 용어를 한곳에 모았다. 함수를 만들고 호출하기 전에 이 페이지의 일곱 개념 — **Workspace · Account · Application Project · Action · Git Source · Job · Customer** — 과 "소스가 어떻게 실행 가능한 카탈로그가 되는가"만 잡아 두면, 나머지 문서가 같은 단어로 읽힌다.
 
 ## 한눈에 보는 용어표
 
@@ -13,6 +13,7 @@ windforce를 쓰거나 운영할 때 반복해서 만나는 용어를 한곳에 
 | **Action** | `action`, `action_key` | Application Project 안의 호출 가능한 함수. 실행 주소의 한 segment이자 `ctx.action` 디스패치 키. | 별도 소스 번들이나 별도 entrypoint가 아니다. |
 | **Git Source** | `git_source`, `git_source_id` | sync가 사용하는 저장소·브랜치·subpath·자격증명 참조. | Application Project가 아니다. |
 | **Job** | `job`, `job_queue`, `job_completed` | 영속화된 실행 기록. 실행 메타를 자기 자신에 고정(self-pin)한다. | 트리거 종류가 아니다. |
+| **Customer**(consumer) | `consumer`, `consumer_id` | 워크스페이스의 **외부 고객** — 발급한 API 키 뒤의 안정적 정체성. 키는 grant된 액션만 호출하고 자기 잡만 읽으며, 실행마다 고객이 각인돼 사용량·과금의 기반이 된다. | 워크스페이스 멤버나 운영자 토큰이 아니다. |
 
 ## 워크스페이스와 계정
 
@@ -29,6 +30,16 @@ flowchart TD
     W1 --> P1["Application Project<br/>+ Action들"]
     W2 --> P2["Application Project<br/>+ Action들"]
 ```
+
+## 고객 — 워크스페이스 안의 외부 정체성
+
+멤버가 **워크스페이스를 운영하는 사람**이라면, **Customer**(consumer)는 그 워크스페이스의 **앱을 API로 소비하는 외부 고객**이다. 운영자는 고객을 등록하고 그 고객에게 묶인 API 키를 발급한다 — 이 키가 곧 고객의 크리덴셜이다.
+
+- 고객 키는 **deny-by-default**다: 운영자가 grant(입력 설정 행)를 만든 `(app, action)`만 호출할 수 있고, 잡 읽기는 자기 고객의 잡만 보인다. 운영자 표면(앱·멤버·토큰·시크릿 등)엔 아예 접근할 수 없다.
+- 고객별 **입력 설정**으로 액션 입력의 기본값을 채우거나 값을 잠글 수 있다(고객별 크리덴셜·단가처럼 고객이 못 바꿔야 하는 값). 워커가 실행 직전에 합성하므로 모든 트리거에 균일하다.
+- 고객 키가 실행한 모든 잡·flow run에는 **고객 정체성이 각인**되어 고객별 사용량·과금·감사·읽기 격리의 기반이 된다.
+
+자세한 사용법은 [Customers 가이드](../guide/customers.md)를 본다.
 
 ## 프로젝트와 액션
 
